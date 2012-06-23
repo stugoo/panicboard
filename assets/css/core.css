@@ -1,0 +1,372 @@
+/*=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+    core.css
+    Contains core styles
+    Created at:
+    Created by:
+
+    @credits
+    This site uses a modification on the SMACSS design - http://smacss.com/ - by @snookca
+
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*/
+/* ====================================================
+    LESS IMPORTS
+==================================================== */
+/* ====================================================
+    LESS VARS
+==================================================== */
+/* ====================================================
+    BASE STYLES
+
+    Base rules are the defaults. They are almost exclusively
+    single element selectors but it could include attribute selectors,
+    pseudo-class selectors, child selectors or sibling selectors.
+    Essentially, a base style says that wherever this element is on the page,
+    it should look like...
+==================================================== */
+* {
+  /* Paul Irish's suggestion: http://paulirish.com/2012/box-sizing-border-box-ftw/ */
+
+  /*-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;*/
+
+  /* Chris Coyier's suggestions */
+
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+::-moz-selection {
+  background: #333;
+  color: #EEE;
+  text-shadow: none;
+}
+::selection {
+  background: #333;
+  color: #EEE;
+  text-shadow: none;
+}
+html,
+body {
+  -web-font-smoothing: antialiased;
+}
+body {
+  width: 100%;
+  background: #f9f6ef url() no-repeat center center scroll;
+  font-family: "Trebuchet", "Helvetica", "Arial", "sans-serif";
+}
+p {
+  color: #52342f;
+}
+/* ====================================================
+    LAYOUT STYLES
+
+    Layout rules divide the page into sections.
+    Layouts hold one or more modules together.
+==================================================== */
+#header {
+  height: 250px;
+  background: #4f332f url("../img/bgs/header.bg.jpg") no-repeat center center scroll;
+}
+#logo {
+  width: 291px;
+  height: 157px;
+  text-indent: -9999em;
+}
+#logo a {
+  display: block;
+  max-width: 100%;
+  height: 100%;
+  background: transparent url("../img/logo.png") no-repeat center center scroll;
+}
+#navigation {
+  height: 60px;
+  background: #944e35 url() no-repeat center center scroll;
+}
+#content {
+  padding: 10px 0px;
+}
+#main {
+  width: 61%;
+  float: left;
+  padding-right: 3%;
+  margin-right: 3%;
+  border-right: 2px solid #f2eee5;
+}
+#sidebar {
+  width: 32%;
+  float: right;
+}
+#footer {
+  height: 250px;
+  background: #4f332f url() no-repeat center center scroll;
+  clear: both;
+}
+/* ====================================================
+    MODULES STYLES
+
+    Modules are the reusable, modular parts of our design.
+    They are the callouts, the sidebar sections, the product lists and so on.
+==================================================== */
+.site-w {
+  max-width: 940px;
+  margin: 0px auto;
+}
+.nav-link {
+  text-transform: uppercase;
+  color: #d7ceb9;
+}
+.nav-link.current,
+.nav-link:hover {
+  color: #ffffff;
+}
+.icon {
+  display: block;
+  text-indent: -9999em;
+}
+.icon-hand {
+  width: 60px;
+  height: 60px;
+  background-image: url("../img/misc/hand.png");
+  background-position: center center;
+  position: absolute;
+  left: -80px;
+  top: -6px;
+}
+.droop {
+  position: relative;
+}
+.droop p {
+  font-size: 0.9em;
+  line-height: 1.5em;
+  margin-bottom: 20px;
+}
+.droop-title {
+  font-size: 2.3em;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 0px #FFF;
+}
+.droop-title a {
+  color: #52342f;
+}
+.droop-title a:hover {
+  text-decoration: none;
+}
+.droop-more {
+  color: #944e36;
+  text-align: right;
+}
+.droop-meta {
+  color: #c7bfac;
+  padding: 12px 0px;
+  border-top: 3px solid #f2eee5;
+  border-bottom: 3px solid #f2eee5;
+  margin: 10px 0px 20px;
+  font-size: 0.9em;
+}
+.droop-meta a {
+  color: #944e36;
+}
+/* ====================================================
+    STATES STYLES
+
+    State rules are ways to describe how our modules or layouts will
+    look when in a particular state.
+    Is it hidden or expanded? Is it active or inactive?
+    They are about describing how a module or layout looks on screens that are smaller or bigger.
+    They are also about describing how a module might look in different
+    views like the home page or the inside page.
+==================================================== */
+.fontface .droop-title {
+  font-family: "LeagueGothicRegular";
+  font-size: 2.7em;
+  font-weight: normal;
+}
+/* ==|== Media Queries ======================================================
+    PLACEHOLDER Media Queries for Responsive Design.
+    These override the primary ('mobile first') styles
+    Modify as content requires.
+========================================================================== */
+/* HTML5 BOILERPLATE ======================================================== */
+/* Style adjustments for viewports 480px and over go here */
+@media only screen and (min-width: 480px) {
+  
+}
+/* Style adjustments for viewports 768px and over go here */
+@media only screen and (min-width: 768px) {
+  
+}
+/* TWITTER BOOTSTRAP 2.0 ==================================================== */
+/* Smartphones: Landscape and down (480px and below) */
+@media (max-width: 480px) {
+  
+}
+/* Landscape phone to portrait tablet (480px to 768px) */
+@media (max-width: 768px) {
+  
+}
+/* Portrait tablet to landscape and desktop (768px to 980px)  */
+@media (min-width: 768px) and (max-width: 980px) {
+  
+}
+/* Large desktop */
+@media (min-width: 1200px) {
+  
+}
+/* OTHER ONES FOUND ON THE WEB ============================================== */
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  
+}
+/* Smartphones (landscape) ----------- */
+@media only screen and (min-width: 321px) {
+  
+}
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 320px) {
+  
+}
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  
+}
+/* iPads (landscape) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+  
+}
+/* iPads (portrait) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
+  
+}
+/* Desktops and laptops ----------- */
+@media only screen and (min-width: 1224px) {
+  
+}
+/* Large screens ----------- */
+@media only screen and (min-width: 1824px) {
+  
+}
+/* iPhone 4 ----------- */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
+  
+}
+/* ==|== print styles =======================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: h5bp.com/r
+   ========================================================================== */
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -ms-filter: none !important;
+  }
+  /* Black prints faster: h5bp.com/s */
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+  .ir a:after,
+  a[href^="javascript:"]:after,
+  a[href^="#"]:after {
+    content: "";
+  }
+  /* Don't show links for images, or javascript/internal links */
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  thead {
+    display: table-header-group;
+  }
+  /* h5bp.com/t */
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+  img {
+    max-width: 100% !important;
+  }
+  @page  {
+    margin: 0.5cm;
+  }
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+/* Font stack options
+
+  The following represents a list of font stacks, as recommended by Nathan Ford in
+  http://unitinteractive.com/blog/2008/06/26/better-css-font-stacks/
+
+  I've added inverted commas around the relevant family names to ensure compatibility.
+  p = balanced for paragraphs or body copy
+  t = balanced for headlines or titles
+
+  - - - -
+
+Arial, "Helvetica Neue", Helvetica, sans-serif - p, t
+
+Baskerville, "Times New Roman", Times, serif - p
+Baskerville, "Times, Times New Roman", serif - t
+
+Cambria, Georgia, Times, "Times New Roman", serif - p, t
+"Century Gothic", "Apple Gothic", sans-serif - p, t
+
+Consolas, "Lucida Console", Monaco, monospace - p, t
+
+"Copperplate Light", "Copperplate Gothic Light", serif - p, t
+
+"Courier New", Courier, monospace - p, t
+
+"Franklin Gothic Medium", "Arial Narrow Bold", Arial, sans-serif - p, t
+
+Futura, "Century Gothic", "Apple Gothic", sans-serif - p, t
+
+Garamond, "Hoefler Text", "Times New Roman", Times, serif - p
+Garamond, "Hoefler Text", Palatino, "Palatino Linotype", serif - t
+
+Geneva, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif - p
+Geneva, Verdana, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif - t
+
+Georgia, Palatino, "Palatino Linotype", Times, "Times New Roman", serif - p
+Georgia, Times, "Times New Roman", serif - t
+
+GillSans, Calibri, Trebuchet, sans-serif - p
+GillSans, Trebuchet, Calibri, sans-serif - t
+
+"Helvetica Neue", Arial, Helvetica, sans-serif - p
+Helvetica, "Helvetica Neue", Arial, sans-serif - t
+
+Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif - p, t
+
+"Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif - p, t
+
+Palatino, "Palatino Linotype", Georgia, Times, "Times New Roman", serif - p
+Palatino, "Palatino Linotype", "Hoefler Text", Times, "Times New Roman", serif - t
+
+Tahoma, Geneva, Verdana - p
+Tahoma, Verdana, Geneva - t
+
+Times, "Times New Roman", Georgia, serif - p, t
+
+Trebuchet, "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif - p
+Trebuchet, Tahoma, Arial, sans-serif - t
+
+Verdana, Geneva, Tahoma, sans-serif - p
+Verdana, Tahoma, Geneva, sans-serif - t
+
+*/
