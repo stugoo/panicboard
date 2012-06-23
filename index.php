@@ -126,6 +126,7 @@
   <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
   <script src="assets/js/plugins.js"></script>
+  <script src="assets/js/jquery.tweet.js"></script> 
   <script src="assets/js/script.js"></script>
 
     

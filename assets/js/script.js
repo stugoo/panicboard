@@ -17,6 +17,23 @@ panic = {
 	all : function(){
 		this.dateTime();
 		this.weather();
+		this.initTwitter();
+		this.initTflTube();
+	},
+	
+	// extensiont
+	config : {
+		
+		twitter 	: ["stugoo","adamcbrewer"],
+		instagram 	: [],
+		news 		: [],
+		tfl			: []	
+				
+	},
+	
+	addPage : function(classes) {
+			$('#content').append('<article class="page '+classes+'"/>');
+		
 	},
 	
 	
@@ -117,6 +134,66 @@ panic = {
 			  });
 		
 		});
+				
+	},
+	
+	
+	
+	// Twitter
+	initTwitter : function() {
+		
+		$.each(panic.config.twitter, function(i,e){
+			
+			panic.createTwitterFeed(e);
+			
+		});
+		
+	},
+	
+	createTwitterFeed : function(feed) {
+			
+			var containerClasses  = 'twitterfeed '+feed;
+			this.addPage(containerClasses);		
+		
+			$('.'+feed).tweet({
+				username: feed,
+				join_text: "auto",
+				avatar_size: 32,
+				count: 3,
+				auto_join_text_default: "we said,",
+				auto_join_text_ed: "we",
+				auto_join_text_ing: "we were",
+				auto_join_text_reply: "we replied to",
+				auto_join_text_url: "we were checking out",
+				loading_text: "loading tweets..."
+			});
+		
+		
+	},
+	
+	initTflTube : function() {
+		
+		var containerClasses  = 'tfltube';
+		this.addPage(containerClasses);	
+		
+		// taken from TFL embed.
+		
+		var filePath='http://www.tfl.gov.uk/tfl/syndication/feeds/serviceboard-fullscreen.htm';
+		var iframe='<iframe id="tfl_serviceboard_stretchy" name="tfl_serviceboard" src ="#" width="100%" height="1" marginheight="0" marginwidth="0" frameborder="no" scrolling="auto"></iframe>';
+		$('.'+containerClasses).html(iframe);
+		
+		var aspectRatio = 1.35; //Middle value to accomodate height with 3 to 4 multiple delays
+		var myIframe = parent.document.getElementById("tfl_serviceboard_stretchy");
+		var iframeWidth = myIframe.clientWidth - 2;
+		myIframe.height = iframeWidth * aspectRatio;
+		myIframe.width = iframeWidth;
+		myIframe.src = filePath;
+		myIframe.style.border = "1px solid #113B92";		
+		
+	},
+	
+	// TFL countdown
+	initTFLBus : function() {
 		
 		
 		
