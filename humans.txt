@@ -1,0 +1,26 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+       __                                      
+      /\ \__                                   
+  ____\ \ ,_\  __  __     __     ___     ___   
+ /',__\\ \ \/ /\ \/\ \  /'_ `\  / __`\  / __`\ 
+/\__, `\\ \ \_\ \ \_\ \/\ \L\ \/\ \L\ \/\ \L\ \
+\/\____/ \ \__\\ \____/\ \____ \ \____/\ \____/
+ \/___/   \/__/ \/___/  \/___L\ \/___/  \/___/ 
+                          /\____/              
+                          \_/__/
+
+/* TEAM */
+  Developer : Stugoo - Stuart Grant
+  Site: stugoo.co.uk
+  Twitter: @stugoo
+  Location: London
+
+/* THANKS */
+  Names (& URL):
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: Modernizr, jQuery
+  Software: Build template based on HTML5 Boilerplate.
