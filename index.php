@@ -32,8 +32,10 @@
         
         	<h1>PANIC BOARD</h1>
         	
-            <aside>
-                <ul class="clock">
+            <section>
+            
+            	<article class="clock">
+                <ul>
                     <li>
                         <h1>date</h1>
                         <span class="foldable">
@@ -51,11 +53,29 @@
                         </span>
                     </li>
                 </ul>
+                </article>
+                
+                <article class="weather">
+                  <h1>Weather</h1>
+                  
+                  <h2>Today</h2>
+                  <ul class="current">
+                   
+                 </ul>
+                
+                <h3>Forecast</h3>
+               	 <ul class="forecast">
+                	
+                 </ul>
+                
+                
+                </article>
+                
                 
                
                 
                     ​            
-            </aside>
+            </section>
         
         
 		</header>
