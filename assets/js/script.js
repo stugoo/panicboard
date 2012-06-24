@@ -188,100 +188,83 @@ panic = {
 	// Twitter
 	initTwitter : function() {
 		
+		var opts = {
+				join_text: "auto",
+				avatar_size: 32,
+				count: 20,
+				auto_join_text_default: "we said,",
+				auto_join_text_ed: "we",
+				auto_join_text_ing: "we were",
+				auto_join_text_reply: "we replied to",
+				auto_join_text_url: "we were checking out",
+				loading_text : "loading tweets..."
+			}
+		
 		// concatonated twitter feed
-		panic.createTwitterUserFeed(panic.config.twitter.feeds);		
+		panic.createTwitterUserFeed(panic.config.twitter.feeds,opts);		
 		
 		// for hash tags
 		$.each(panic.config.twitter.hashtags, function(i,e){
-			panic.createTwitterHashFeed(e);
+			panic.createTwitterHashFeed(e,opts);
 		});
 		
 		// for lists
 		$.each(panic.config.twitter.lists, function(i,e){
-			panic.createTwitterListFeed(e);
+			panic.createTwitterListFeed(e,opts);
 		});
 		
 	},
 	
-	createTwitterUserFeed : function(feed) {
+	createTwitterUserFeed : function(feed,opts) {
 		
 		var feedclass = feed.join();
 			fc = feedclass.split(',').join('-');
+			fmessage = feedclass.split(',').join(', @');
 			
+		var containerClasses  = 'twitterfeed '+fc,
+			icon  = 'twitter-sign';
+			this.addPage(containerClasses,icon);
 			
-			var containerClasses  = 'twitterfeed '+fc,
-			 	icon  = 'twitter-sign';
-			this.addPage(containerClasses,icon);		
-		
-			$('#content .'+fc).tweet({
-				username: feed,
-				join_text: "auto",
-				avatar_size: 32,
-				count: 20,
-				auto_join_text_default: "we said,",
-				auto_join_text_ed: "we",
-				auto_join_text_ing: "we were",
-				auto_join_text_reply: "we replied to",
-				auto_join_text_url: "we were checking out",
-				loading_text: "loading tweets..."
-			}).bind("loaded",function(){
-				
-				$(this).prepend('<h1>Tweets from :@' +feedclass+'</h1>');
-		
+		opts.username = feed;		
+	
+		$('#content .'+fc)
+			.tweet(opts)
+			.bind("loaded",function(){
+				$(this).prepend('<h1>Tweets from : @' +fmessage+'</h1>');
 			});
 	},
 	
-	createTwitterHashFeed: function(feed) {
-		var feedclass = feed.replace('#', '')
-			var containerClasses  = 'twitterfeed '+feedclass,
-			 	icon  = 'twitter-sign';
-			this.addPage(containerClasses,icon);		
+	createTwitterHashFeed: function(feed,opts) {
+		var feedclass = feed.replace('#', '');
+		var containerClasses  = 'twitterfeed '+feedclass,
+			icon  = 'twitter-sign';
+		this.addPage(containerClasses,icon);		
+						
+		opts.query = 'from:'+feed+' http';
 		
-			$('#content .'+feedclass).tweet({
-				query: 'from:'+feed+' http',
-				join_text: "auto",
-				avatar_size: 32,
-				count: 20,
-				auto_join_text_default: "we said,",
-				auto_join_text_ed: "we",
-				auto_join_text_ing: "we were",
-				auto_join_text_reply: "we replied to",
-				auto_join_text_url: "we were checking out",
-				loading_text: "loading tweets..."
-			}).bind("loaded",function(){
-				
+		$('#content .'+feedclass)
+			.tweet(opts)
+			.bind("loaded",function(){
 				$(this).prepend('<h1>Tweets:' +feed+'</h1>');
-		
 			});
 	},
 	
 	
-	createTwitterListFeed: function(feed) {
+	createTwitterListFeed: function(feed,opts) {
 		
-		console.log(feed)
-		
-		var feedclass = feed.user+'-'+feed.list
-			var containerClasses  = 'twitterfeed '+feedclass,
-			 	icon  = 'twitter-sign';
+		var feedclass = feed.user+'-'+feed.list,
+			containerClasses  = 'twitterfeed '+feedclass,
+			icon  = 'twitter-sign';
 			this.addPage(containerClasses,icon);		
 		
-			$('#content .'+feedclass).tweet({
-				username : feed.user,
-				list :	feed.list,
-				join_text: "auto",
-				avatar_size: 32,
-				count: 20,
-				auto_join_text_default: "we said,",
-				auto_join_text_ed: "we",
-				auto_join_text_ing: "we were",
-				auto_join_text_reply: "we replied to",
-				auto_join_text_url: "we were checking out",
-				loading_text: "loading tweets..."
-			}).bind("loaded",function(){
-				
-				$(this).prepend('<h1>Tweets From: @' +feed.user+'\'s list: '+feed.list +'</h1>');
+			opts.username = feed.user;
+			opts.list =	feed.list;
 		
-			});
+			$('#content .'+feedclass)
+				.tweet(opts)
+				.bind("loaded",function(){
+					$(this).prepend('<h1>Tweets From: @' +feed.user+'\'s list: '+feed.list +'</h1>');
+				});
 	},
 	
 	initTflTube : function() {
