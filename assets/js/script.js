@@ -19,21 +19,36 @@ panic = {
 		this.weather();
 		this.initTwitter();
 		this.initTflTube();
+		this.instagram();
+	
+	
+		this.carousel();
+	
 	},
 	
-	// extensiont
+	// extension
 	config : {
 		
-		twitter 	: ["stugoo","adamcbrewer"],
+		location	: 'london',
+		WOEID		: '44418', // http://sigizmund.info/woeidinfo/
+		twitter 	: {
+				feeds 		: ['stugoo','adamcbrewer'],
+				hashtags 	: ['#w3c','#html5','#yolo'],
+				lists		: [
+								{ user : 'stugoo', list : 'Testlist'}
+				]
+		},
 		instagram 	: [],
 		news 		: [],
 		tfl			: []	
 				
 	},
 	
-	addPage : function(classes) {
-			$('#content').append('<article class="page '+classes+'"/>');
-		
+	addPage : function(pageclass, iconclass) {
+			var count = $('#content .page').length;
+	
+			$('#content').append('<article class="page '+pageclass+'"/>');
+			$('#nav ul').append('<li><a href="#" data-page="'+count+'"><i class="icon-'+iconclass+'"/></li>');
 	},
 	
 	
@@ -68,10 +83,40 @@ panic = {
 	
 	},
 	
+	carousel : function() {
+		
+		var theShow = $('#content'),
+			board = theShow.cycle({ 
+			fx:     'fade', 
+			speed:  400, 
+			timeout: 10000, 
+			easing : 'easeInOutCirc',
+			after : function(currSlideElement, nextSlideElement, options, forwardFlag){
+				
+				var i = $('article').index(nextSlideElement)-1;				
+					$('#nav .active').removeClass('active');
+					$('#nav ul li:nth-child('+i+')').addClass('active');
+			}
+		});
+		
+		$('#nav a').click(function() { 
+			board.cycle($(this).data('page')); 
+			return false; 
+		}); 
+
+
+
+	},
+	
 	
 	// global months
 	months : ["January","February","March","April","May","June","July","August","September","October","November","December"],
 	days : ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+	
+	pad2 : function(number) {
+    	return (number < 10 ? '0' : '') + number
+	},
+	
 	
 	//date time ticker
 	dateTime : function() {
@@ -84,16 +129,18 @@ panic = {
 			m = parseInt(now.getMinutes()),
 			s = parseInt(now.getSeconds());
 			
-			d = parseInt(now.getDay());
+			d = parseInt(now.getDate());
+			dd = panic.days[parseInt(now.getDay())];
 			mm = panic.months[parseInt(now.getMonth())];
 			y = parseInt(now.getFullYear());
 	
 			clock.find('.year').text(y);
-			clock.find('.month').text(mm);
+			clock.find('.month').text(panic.pad2(mm));
+			clock.find('.date .date').text(dd);
 			clock.find('.day').text(d);
-			clock.find('.hours').text(h);
-			clock.find('.minutes').text(m);
-			clock.find('.seconds').text(s);
+			clock.find('.hours').text(panic.pad2(h));
+			clock.find('.minutes').text(panic.pad2(m));
+			clock.find('.seconds').text(panic.pad2(s));
 		  
 		}, 1000);
 		
@@ -102,7 +149,8 @@ panic = {
 	// handle weather
 	weather : function (){
 		
-		$.getJSON('apis/weather.php?city=london', function(data) {
+		
+		$.getJSON('apis/weather.php?city='+panic.config.location, function(data) {
 			
 			var t 		= data.current,
 				today 	= '<li class="condition">'+t.condition+'</li>'
@@ -113,9 +161,7 @@ panic = {
 
 			  $('.weather .current').append(today);
 			  
-			  $.each(data, function(i,e){
-				  
-				  
+			  $.each(data, function(i,e){				  
 				  if (i !== 0 || i !== 1 ) {
 				  	var f = data[i],
 						forecast = '<li class="item">'
@@ -142,50 +188,118 @@ panic = {
 	// Twitter
 	initTwitter : function() {
 		
-		$.each(panic.config.twitter, function(i,e){
-			
-			panic.createTwitterFeed(e);
-			
+		// concatonated twitter feed
+		panic.createTwitterUserFeed(panic.config.twitter.feeds);		
+		
+		// for hash tags
+		$.each(panic.config.twitter.hashtags, function(i,e){
+			panic.createTwitterHashFeed(e);
+		});
+		
+		// for lists
+		$.each(panic.config.twitter.lists, function(i,e){
+			panic.createTwitterListFeed(e);
 		});
 		
 	},
 	
-	createTwitterFeed : function(feed) {
-			
-			var containerClasses  = 'twitterfeed '+feed;
-			this.addPage(containerClasses);		
+	createTwitterUserFeed : function(feed) {
 		
-			$('.'+feed).tweet({
+		var feedclass = feed.join();
+			fc = feedclass.split(',').join('-');
+			
+			
+			var containerClasses  = 'twitterfeed '+fc,
+			 	icon  = 'twitter-sign';
+			this.addPage(containerClasses,icon);		
+		
+			$('#content .'+fc).tweet({
 				username: feed,
 				join_text: "auto",
 				avatar_size: 32,
-				count: 3,
+				count: 20,
 				auto_join_text_default: "we said,",
 				auto_join_text_ed: "we",
 				auto_join_text_ing: "we were",
 				auto_join_text_reply: "we replied to",
 				auto_join_text_url: "we were checking out",
 				loading_text: "loading tweets..."
+			}).bind("loaded",function(){
+				
+				$(this).prepend('<h1>Tweets from :@' +feedclass+'</h1>');
+		
 			});
+	},
+	
+	createTwitterHashFeed: function(feed) {
+		var feedclass = feed.replace('#', '')
+			var containerClasses  = 'twitterfeed '+feedclass,
+			 	icon  = 'twitter-sign';
+			this.addPage(containerClasses,icon);		
 		
+			$('#content .'+feedclass).tweet({
+				query: 'from:'+feed+' http',
+				join_text: "auto",
+				avatar_size: 32,
+				count: 20,
+				auto_join_text_default: "we said,",
+				auto_join_text_ed: "we",
+				auto_join_text_ing: "we were",
+				auto_join_text_reply: "we replied to",
+				auto_join_text_url: "we were checking out",
+				loading_text: "loading tweets..."
+			}).bind("loaded",function(){
+				
+				$(this).prepend('<h1>Tweets:' +feed+'</h1>');
 		
+			});
+	},
+	
+	
+	createTwitterListFeed: function(feed) {
+		
+		console.log(feed)
+		
+		var feedclass = feed.user+'-'+feed.list
+			var containerClasses  = 'twitterfeed '+feedclass,
+			 	icon  = 'twitter-sign';
+			this.addPage(containerClasses,icon);		
+		
+			$('#content .'+feedclass).tweet({
+				username : feed.user,
+				list :	feed.list,
+				join_text: "auto",
+				avatar_size: 32,
+				count: 20,
+				auto_join_text_default: "we said,",
+				auto_join_text_ed: "we",
+				auto_join_text_ing: "we were",
+				auto_join_text_reply: "we replied to",
+				auto_join_text_url: "we were checking out",
+				loading_text: "loading tweets..."
+			}).bind("loaded",function(){
+				
+				$(this).prepend('<h1>Tweets From: @' +feed.user+'\'s list: '+feed.list +'</h1>');
+		
+			});
 	},
 	
 	initTflTube : function() {
 		
-		var containerClasses  = 'tfltube';
-		this.addPage(containerClasses);	
+		var containerClasses  = 'tfltube',
+			icon  = 'warning-sign';
+		this.addPage(containerClasses,icon);	
 		
 		// taken from TFL embed.
 		
 		var filePath='http://www.tfl.gov.uk/tfl/syndication/feeds/serviceboard-fullscreen.htm';
-		var iframe='<iframe id="tfl_serviceboard_stretchy" name="tfl_serviceboard" src ="#" width="100%" height="1" marginheight="0" marginwidth="0" frameborder="no" scrolling="auto"></iframe>';
-		$('.'+containerClasses).html(iframe);
+		var iframe='<iframe id="tfl_serviceboard_stretchy" name="tfl_serviceboard" src ="#" width="100%" height="100%" marginheight="0" marginwidth="0" frameborder="no" scrolling="auto"></iframe>';
+		$('#content .'+containerClasses).html(iframe);
 		
 		var aspectRatio = 1.35; //Middle value to accomodate height with 3 to 4 multiple delays
 		var myIframe = parent.document.getElementById("tfl_serviceboard_stretchy");
 		var iframeWidth = myIframe.clientWidth - 2;
-		myIframe.height = iframeWidth * aspectRatio;
+		//myIframe.height = iframeWidth * aspectRatio;
 		myIframe.width = iframeWidth;
 		myIframe.src = filePath;
 		myIframe.style.border = "1px solid #113B92";		
@@ -195,6 +309,28 @@ panic = {
 	// TFL countdown
 	initTFLBus : function() {
 		
+		
+		
+	},
+	
+	instagram : function() {
+		
+		var containerClasses  = 'instagram',
+			icon  = 'camera';
+		this.addPage(containerClasses,icon);
+	
+		$.ajax({
+			type: "GET",
+			dataType: "jsonp",
+			cache: false,
+			url: "https://api.instagram.com/v1/users/18360510/media/recent/?access_token=18360510.f59def8.d8d77acfa353492e8842597295028fd3",
+			success: function(data) {
+				for (var i = 0; i < 30; i++) {
+					$("#content .instagram").append("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[i].link +"'><img class='instagram-image' src='" + data.data[i].images.low_resolution.url +"' /></a></div>");   
+			}     
+                            
+        }
+    });	
 		
 		
 	}
