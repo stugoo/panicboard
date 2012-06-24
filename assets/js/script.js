@@ -123,21 +123,20 @@ panic = {
 			
 			$('#content').cycle('pause');
 			
-			page.find('ul')
-				.cycle('destroy')
+			var magic = 
+				page.find('ul')
 				.cycle({ 
 					fx:     'fade', 
 					speed:  400, 
 					timeout: 10000, 
 					easing : 'easeInOutCirc',
-					nowrap: 1,
 					autostop : true,
 					end : function(x){
+						
+						magic.cycle(0);
 						panic.config.board.cycle('next');
 					}
-			});
-			
-			
+			}).cycle('resume');
 			
 		} else { 
 			panic.config.board.cycle('resume');
@@ -339,7 +338,7 @@ panic = {
 		var url = "https://api.instagram.com/v1/users/"+panic.config.instagram.userID+"/media/recent/?access_token="+panic.config.instagram.access_token,
 			x = 9999;
 		this.askInstagram(url,x)
-		
+	
 		$.each(panic.config.instagram.tags, function(i,e){
 			var tag = "https://api.instagram.com/v1/tags/"+e+"/media/recent?access_token="+panic.config.instagram.access_token
 			panic.askInstagram(tag,i)
@@ -371,7 +370,7 @@ panic = {
 			el.append('<ul />');
 		var ul = $('#content .'+uid +' ul'),
 			limit = data.data.length,
-			limit = 3;
+			limit = 5;
 						
 				
 			for (var i = 0; i < limit; i++) {
