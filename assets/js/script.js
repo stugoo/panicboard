@@ -22,8 +22,7 @@ panic = {
 		this.instagram();
 	
 	
-		this.carousel();
-	
+		this.boardTick();
 	},
 	
 	// extension
@@ -38,7 +37,12 @@ panic = {
 								{ user : 'stugoo', list : 'Testlist'}
 				]
 		},
-		instagram 	: [],
+		instagram 	: {
+				userID : "15641920",
+				access_token : "15641920.716b1e0.b4e09ea391ce41078066b1e8d78ac82f",
+				tags : ["olympics", "face", "euro2012"] 
+			
+			},
 		news 		: [],
 		tfl			: []	
 				
@@ -83,31 +87,59 @@ panic = {
 	
 	},
 	
-	carousel : function() {
+	boardTick : function() {
 		
 		var theShow = $('#content'),
 			board = theShow.cycle({ 
-			fx:     'fade', 
-			speed:  400, 
-			timeout: 10000, 
-			easing : 'easeInOutCirc',
-			after : function(currSlideElement, nextSlideElement, options, forwardFlag){
-				
-				var i = $('article').index(nextSlideElement)-1;				
-					$('#nav .active').removeClass('active');
-					$('#nav ul li:nth-child('+i+')').addClass('active');
-			}
-		});
+						fx:     'fade', 
+						speed:  400, 
+						timeout: 1500, 
+						easing : 'easeInOutCirc',
+						after : function(currSlideElement, nextSlideElement, options, forwardFlag){
+							
+							var i = $('article').index(nextSlideElement)-1;				
+								$('#nav .active').removeClass('active');
+								$('#nav ul li:nth-child('+i+')').addClass('active');
+															
+								panic.playPauseListner(nextSlideElement);																
+						}
+					});
 		
 		$('#nav a').click(function() { 
 			board.cycle($(this).data('page')); 
 			return false; 
 		}); 
-
-
+		
+		panic.config.board = board;
 
 	},
+	playPauseListner : function(page) {
+		
+		var page = $(page)
 	
+		if(page.hasClass('instagram')) {
+			
+			panic.config.board.cycle('pause');
+			
+			page.find('ul').cycle({ 
+					fx:     'fade', 
+					speed:  400, 
+					timeout: 10000, 
+					easing : 'easeInOutCirc',
+					nowrap: 1,
+					end : function(x){
+						console.log(x)
+						panic.config.board.cycle('resume');
+					}
+			});
+			
+			
+			
+		}
+		
+		
+		
+	},
 	
 	// global months
 	months : ["January","February","March","April","May","June","July","August","September","October","November","December"],
@@ -298,7 +330,21 @@ panic = {
 	
 	instagram : function() {
 		
-		var containerClasses  = 'instagram',
+		var url = "https://api.instagram.com/v1/users/"+panic.config.instagram.userID+"/media/recent/?access_token="+panic.config.instagram.access_token,
+			x = 9999;
+		this.askInstagram(url,x)
+		
+		$.each(panic.config.instagram.tags, function(i,e){
+			var tag = "https://api.instagram.com/v1/tags/"+e+"/media/recent?access_token="+panic.config.instagram.access_token
+			panic.askInstagram(tag,i)
+
+		});
+
+	},
+	askInstagram : function(url,o) {
+		
+		var uid = 'ig-' + panic.config.instagram.userID +'-'+o,
+			containerClasses  = 'instagram '+uid,
 			icon  = 'camera';
 		this.addPage(containerClasses,icon);
 	
@@ -306,17 +352,73 @@ panic = {
 			type: "GET",
 			dataType: "jsonp",
 			cache: false,
-			url: "https://api.instagram.com/v1/users/18360510/media/recent/?access_token=18360510.f59def8.d8d77acfa353492e8842597295028fd3",
+			url: url,
 			success: function(data) {
-				for (var i = 0; i < 30; i++) {
-					$("#content .instagram").append("<div class='instagram-placeholder'><a target='_blank' href='" + data.data[i].link +"'><img class='instagram-image' src='" + data.data[i].images.low_resolution.url +"' /></a></div>");   
-			}     
-                            
-        }
-    });	
+					panic.handleInstagram(data, uid); 
+				}
+			});	
 		
+	},
+	handleInstagram : function(data, uid) {
+	
+		var el  = $('#content .'+uid);		
+			el.append('<ul />');
+		var ul = $('#content .'+uid +' ul'),
+			limit = data.data.length,
+			limit = 10;
+						
+				
+			for (var i = 0; i < limit; i++) {
+				
+				var	img = data.data[i];
+
+					
+				if(img) {
+					
+					var username = img.user.username,
+						thumb = img.images.thumbnail.url,
+						imgURL = img.images.standard_resolution.url,
+						caption;
+					
+					if(img.caption === null) {
+						caption = '';	
+					} else {
+						caption = img.caption.text;
+					}
+					
+					
+					ul.append('<li>'
+							+'<figure>'
+							+'<img class="instagram-image" data-thumb="'+ thumb +'" src="' + data.data[i].images.standard_resolution.url +'" />'
+							+'<figcaption>'
+							+'	<q>"'+ i + caption +'"</q>'
+							+'	<cite>'+ username +'</cite>'
+							+'</figcaption>'
+							+'</figure>'
+						+'</li>');  
+				}
+					
+				if  ( i === limit-1) {
+				/*	var gramSlider = ul
+								.cycle({ 
+									fx:     'fade', 
+									speed:  400, 
+									timeout: 1000, 
+									easing : 'easeInOutCirc',
+									nowrap: 1,
+									end : function(x){
+										panic.config.board.cycle();
+									}
+							}).cycle('pause');
+				*/}
+							
+				
+			} //for     
+									
+					
 		
 	}
+	
 	
 	
 
@@ -328,6 +430,5 @@ $(document).ready(function () {
 	panic.init(panic);  //innits whole thing. last called so all is loaded.
 	
 });
-	
 	
 	

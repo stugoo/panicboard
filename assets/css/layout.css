@@ -65,7 +65,8 @@ body {/*background:url(../images/bg.jpg) #000  center center fixed no-repeat;
 	-moz-transition: all 0.4s border-radius; 
 	-o-transition:  all 0.4s border-radius;
 }
-#nav a {font-size:5em; color:#fad6a9;margin:0;padding:0; display:block; line-height:1; text-decoration:none; height:1em; overflow:hidden;}
+#nav a {font-size:3em; text-align:center; color:#fad6a9;margin:0;padding:0; display:block; line-height:1.2; height:1.2em; overflow:hidden; text-decoration:none;}
+
 #nav .active{ background:#FAD6A8;
 	border-radius: 15px 0 0 15px;
 
