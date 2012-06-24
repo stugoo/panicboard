@@ -28,6 +28,8 @@ panic = {
 	// extension
 	config : {
 		
+		board : $('#content'),
+		
 		location	: 'london',
 		WOEID		: '44418', // http://sigizmund.info/woeidinfo/
 		twitter 	: {
@@ -93,7 +95,7 @@ panic = {
 			board = theShow.cycle({ 
 						fx:     'fade', 
 						speed:  400, 
-						timeout: 1500, 
+						timeout: 10000, 
 						easing : 'easeInOutCirc',
 						after : function(currSlideElement, nextSlideElement, options, forwardFlag){
 							
@@ -119,22 +121,26 @@ panic = {
 	
 		if(page.hasClass('instagram')) {
 			
-			panic.config.board.cycle('pause');
+			$('#content').cycle('pause');
 			
-			page.find('ul').cycle({ 
+			page.find('ul')
+				.cycle('destroy')
+				.cycle({ 
 					fx:     'fade', 
 					speed:  400, 
 					timeout: 10000, 
 					easing : 'easeInOutCirc',
 					nowrap: 1,
+					autostop : true,
 					end : function(x){
-						console.log(x)
-						panic.config.board.cycle('resume');
+						panic.config.board.cycle('next');
 					}
 			});
 			
 			
 			
+		} else { 
+			panic.config.board.cycle('resume');
 		}
 		
 		
@@ -365,13 +371,12 @@ panic = {
 			el.append('<ul />');
 		var ul = $('#content .'+uid +' ul'),
 			limit = data.data.length,
-			limit = 10;
+			limit = 3;
 						
 				
 			for (var i = 0; i < limit; i++) {
 				
 				var	img = data.data[i];
-
 					
 				if(img) {
 					
@@ -399,18 +404,8 @@ panic = {
 				}
 					
 				if  ( i === limit-1) {
-				/*	var gramSlider = ul
-								.cycle({ 
-									fx:     'fade', 
-									speed:  400, 
-									timeout: 1000, 
-									easing : 'easeInOutCirc',
-									nowrap: 1,
-									end : function(x){
-										panic.config.board.cycle();
-									}
-							}).cycle('pause');
-				*/}
+				
+				}
 							
 				
 			} //for     
