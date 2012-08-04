@@ -46,7 +46,12 @@ panic = {
 			
 			},
 		news 		: [],
-		tfl			: []	
+		tfl			: {
+				bus : 'apis/tfl_bus.php',
+				lines : 'apis/tfl_lines.php',
+				traffic : 'apis/tfl_traffic.php'
+		
+		}
 				
 	},
 	
@@ -306,6 +311,18 @@ panic = {
 	
 	initTflTube : function() {
 		
+		
+		
+		
+		$.getJSON(panic.config.tfl.lines, function(data){
+				console.log(data)
+			
+		});
+		
+		
+		
+		/*
+		
 		var containerClasses  = 'tfltube',
 			icon  = 'warning-sign';
 		this.addPage(containerClasses,icon);	
@@ -322,7 +339,10 @@ panic = {
 		//myIframe.height = iframeWidth * aspectRatio;
 		myIframe.width = iframeWidth;
 		myIframe.src = filePath;
-		myIframe.style.border = "1px solid #113B92";		
+		myIframe.style.border = "1px solid #113B92";
+		*/
+		
+			
 		
 	},
 	
@@ -370,7 +390,7 @@ panic = {
 			el.append('<ul />');
 		var ul = $('#content .'+uid +' ul'),
 			limit = data.data.length,
-			limit = 5;
+			limit = 10;
 						
 				
 			for (var i = 0; i < limit; i++) {
