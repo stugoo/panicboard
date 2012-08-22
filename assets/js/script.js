@@ -21,7 +21,7 @@ panic = {
 		this.initTflTube();
 		this.instagram();
 	
-	
+		this.initTFLBus();
 		this.boardTick();
 	},
 	
@@ -31,6 +31,8 @@ panic = {
 		board : $('#content'),
 		
 		location	: 'london',
+		latlong		: '51.5251914,-0.1096091',
+		radius		: '500',
 		WOEID		: '44418', // http://sigizmund.info/woeidinfo/
 		twitter 	: {
 				feeds 		: ['stugoo','adamcbrewer'],
@@ -310,11 +312,11 @@ panic = {
 	},
 	
 	initTflTube : function() {
+				
+
+		var postURL = panic.config.tfl.bus;
 		
-		
-		
-		
-		$.getJSON(panic.config.tfl.lines, function(data){
+		$.post(postURL,  { latlong: panic.config.latlong+','+panic.config.radius }, function(data){
 				console.log(data)
 			
 		});
@@ -349,6 +351,11 @@ panic = {
 	// TFL countdown
 	initTFLBus : function() {
 		
+		
+		$.getJSON(panic.config.tfl.lines, function(data){
+				console.log(data);
+			
+		});
 		
 		
 	},
